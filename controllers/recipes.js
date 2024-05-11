@@ -1,4 +1,4 @@
-import { Recipe } from "../models/recipe"
+import { Recipe } from "../models/recipe.js"
 import axios from "axios"
 
 async function index (req, res) {
