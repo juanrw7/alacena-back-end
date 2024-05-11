@@ -20,6 +20,7 @@ const recipeSchema = new Schema({
   name: String,
   mealType: {
     type: String,
+    default: 'Dinner',
     enum:['Breakfast', 'Lunch', 'Dinner', 'Snack']
   },
   ingredients: {
@@ -28,7 +29,7 @@ const recipeSchema = new Schema({
   },
   cuisineType: {
     type: String,
-    default: American,
+    default: 'American',
     enum:['American' , 'Asian', 'British', 'Carribbean', 'Central Europe', 'Chinese',  'Eastern Europe', 'French', 'Indian',  'Italian', 'Japanese', 'Kosher', 'Mediterranean', 'Mexican', 'Middle Eastern', 'Nordic', 'South American', 'South East Asian'], 
 },
   instructions: String,
