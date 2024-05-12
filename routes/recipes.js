@@ -9,6 +9,6 @@ const router = Router()
 
 /*---------- Protected Routes ----------*/
 router.use(decodeUserFromToken)
-router.post('/', checkAuth, recipesCtrl.index)
+router.post('/', checkAuth, recipesCtrl.search)
 
 export { router }
