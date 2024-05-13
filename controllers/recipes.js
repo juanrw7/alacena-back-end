@@ -47,6 +47,7 @@ async function updateReview (req, res) {
   try {
     const recipe = await Recipe.findById(req.params.blogId)
     const review = recipe.reviews.id(req.body._id)
+    console.log(recipe)
     review.comment = req.body.comment
     await recipe.save()
     res.status(200).json(recipe)
