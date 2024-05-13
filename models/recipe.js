@@ -17,25 +17,11 @@ const reviewSchema = new Schema({
 })
 
 const recipeSchema = new Schema({
-  name: String,
-  mealType: {
-    type: String,
-    default: 'Dinner',
-    enum:['Breakfast', 'Lunch', 'Dinner', 'Snack']
-  },
-  ingredients: {
-    food: String,
-    foodCategory: String,
-  },
-  cuisineType: {
-    type: String,
-    default: 'American',
-    enum:['American' , 'Asian', 'British', 'Carribbean', 'Central Europe', 'Chinese',  'Eastern Europe', 'French', 'Indian',  'Italian', 'Japanese', 'Kosher', 'Mediterranean', 'Mexican', 'Middle Eastern', 'Nordic', 'South American', 'South East Asian'], 
-},
-  instructions: String,
+  label: String,
+  url: String,
   image: String,
   calories: Number,
-  random: Boolean,
+  uri: String,
   reviews: [reviewSchema]
 },{
   timestamps: true,
