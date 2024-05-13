@@ -9,6 +9,10 @@ const router = Router()
 
 /*---------- Protected Routes ----------*/
 router.use(decodeUserFromToken)
-router.post('/', checkAuth, recipesCtrl.search)
+router.get('/:recipeId', checkAuth, recipesCtrl.show)
+router.put('/:recipeId/reviews', checkAuth, recipesCtrl.updateReview)
+router.post('/', checkAuth, recipesCtrl.index)
+router.post('/:recipeId/reviews', checkAuth, recipesCtrl.createReview)
+router.delete('/:recipeId/reviews/:reviewId', checkAuth, recipesCtrl.deleteReview)
 
 export { router }

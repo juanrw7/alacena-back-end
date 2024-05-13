@@ -1,3 +1,4 @@
+import { Profile } from "../models/profile.js"
 import { Recipe } from "../models/recipe.js"
 import axios from "axios"
 
@@ -11,10 +12,67 @@ async function search (req, res) {
     })
   } catch (error) {
     console.log(error)
-    res.status(500).json(error)
+      res.status(500).json(error)
+  }
+}
+
+async function show (req, res){
+  try {
+    const recipe = await Recipe.findById(req.params.recipeId)
+    .populate()
+    res.status(200).json(recipe)
+  } catch (error) {
+    console.log(error)
+      res.status(500).json(error)
+  }
+}
+
+async function createReview (req, res) {
+  try {
+    req.body.author = req.user.profile
+    const recipe = await Recipe.findById(req.params.recipeId)
+    recipe.reviews.push(req.body)
+    await blog.save()
+    const newReview = recipe.reviews.at(-1)
+    const profile = await Profile.findById(req.user.profile)
+    newReview.author = profile
+    res.status(201).json(newReview)
+  } catch (error) {
+    console.log(error)
+      res.status(500).json(error)
+  }
+}
+
+async function updateReview (req, res) {
+  try {
+    const recipe = await Recipe.findById(req.params.blogId)
+    const review = recipe.reviews.id(req.body._id)
+    console.log(recipe)
+    review.comment = req.body.comment
+    await recipe.save()
+    res.status(200).json(recipe)
+  } catch (error) {
+    console.log(error)
+      res.status(500).json(error)
+  }
+}
+
+async function deleteReview (req, res) {
+  try {
+    const recipe = await Recipe.findById(req.params.recipeId)
+    recipe.reviews.remove({_id: req.params.reviewId})
+    await recipe.save()
+    res.status(200).json(recipe)  
+  } catch (error) {
+    console.log(error)
+      res.status(500).json(error)
   }
 }
 
 export{
-  search,
+  index,
+  show,
+  createReview,
+  updateReview,
+  deleteReview,
 }
