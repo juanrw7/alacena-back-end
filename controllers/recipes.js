@@ -66,6 +66,27 @@ async function deleteReview (req, res) {
   } catch (error) {
     console.log(error)
       res.status(500).json(error)
+    }
+  }
+  
+  async function create (req, res) {
+    console.log(req.body.reviewData)
+    const recipe = await Recipe.findOne({uri:req.body.recipeData.uri})
+    // console.log(recipe)
+    // console.log(req.body.label)
+    // console.log(req.body.uri + "req uri")
+
+    if (recipe) {
+      console.log("recipe already exists")
+    } else {
+      console.log("This is a new recipe")
+      const newRecipe = await Recipe.create(req.body.recipeData)
+    }
+    try {
+
+    } catch (error) {
+    console.log(error)
+      res.status(500).json(error)
   }
 }
 
@@ -75,4 +96,5 @@ export{
   createReview,
   updateReview,
   deleteReview,
+  create,
 }
