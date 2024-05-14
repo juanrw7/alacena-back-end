@@ -14,6 +14,7 @@ router.put('/:recipeId/reviews', checkAuth, recipesCtrl.updateReview)
 router.post('/', checkAuth, recipesCtrl.index)
 router.post('/new', checkAuth, recipesCtrl.create)
 router.post('/:recipeId/reviews', checkAuth, recipesCtrl.createReview)
+router.post('/recipedetails', checkAuth, recipesCtrl.showRecipe)
 router.delete('/:recipeId/reviews/:reviewId', checkAuth, recipesCtrl.deleteReview)
 
 export { router }
