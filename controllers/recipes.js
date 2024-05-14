@@ -73,6 +73,7 @@ async function create (req, res) {
   console.log(req.body.reviewData.author)
   req.body.reviewData.author = req.user.profile
   const recipe = await Recipe.findOne({uri:req.body.recipeData.uri})
+    .populate("reviews.author")
   try {
     if (recipe) {
       recipe.reviews.push(req.body.reviewData)
@@ -97,6 +98,24 @@ async function create (req, res) {
   }
 }
 
+async function showRecipe (req, res){
+  console.log(req.body.recipeData)
+  const recipe = await Recipe.findOne({uri:req.body.uri})
+    .populate("reviews.author")
+  console.log(recipe)
+  try {
+    if (recipe) {
+      console.log(req.body.uri)
+      res.status(201).json(recipe)
+    } else {
+      res.status(201).json(req.body.recipeData)
+    }
+  } catch (error) {
+    console.log(error)
+      res.status(500).json(error)
+  }
+}
+
 export{
   index,
   show,
@@ -104,4 +123,5 @@ export{
   updateReview,
   deleteReview,
   create,
+  showRecipe,
 }
