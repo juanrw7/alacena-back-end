@@ -69,24 +69,31 @@ async function deleteReview (req, res) {
     }
   }
   
-  async function create (req, res) {
-    console.log(req.body.reviewData)
-    const recipe = await Recipe.findOne({uri:req.body.recipeData.uri})
-    // console.log(recipe)
-    // console.log(req.body.label)
-    // console.log(req.body.uri + "req uri")
-
+async function create (req, res) {
+  console.log(req.body.reviewData.author)
+  req.body.reviewData.author = req.user.profile
+  const recipe = await Recipe.findOne({uri:req.body.recipeData.uri})
+  try {
     if (recipe) {
-      console.log("recipe already exists")
+      recipe.reviews.push(req.body.reviewData)
+      await recipe.save()
+      const newReview = recipe.reviews.at(-1)
+      const profile = await Profile.findById(req.user.profile)
+      newReview.author = profile
+      console.log(profile)
+      res.status(201).json(recipe)
     } else {
-      console.log("This is a new recipe")
       const newRecipe = await Recipe.create(req.body.recipeData)
+      newRecipe.reviews.push(req.body.reviewData)
+      await newRecipe.save()
+      const newReview = newRecipe.reviews.at(-1)
+      const profile = await Profile.findById(req.user.profile)
+      newReview.author = profile
+      res.status(201).json(newRecipe)
     }
-    try {
-
-    } catch (error) {
-    console.log(error)
-      res.status(500).json(error)
+  } catch (error) {
+  console.log(error)
+  res.status(500).json(error)
   }
 }
 
