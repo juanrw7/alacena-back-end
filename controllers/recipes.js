@@ -44,12 +44,14 @@ async function createReview (req, res) {
 }
 
 async function updateReview (req, res) {
+  console.log(req.body._id)
   try {
-    const recipe = await Recipe.findById(req.params.blogId)
+    const recipe = await Recipe.findById(req.params.recipeId)
     const review = recipe.reviews.id(req.body._id)
-    console.log(recipe)
     review.comment = req.body.comment
+    review.rating = req.body.rating
     await recipe.save()
+    console.log(recipe)
     res.status(200).json(recipe)
   } catch (error) {
     console.log(error)
