@@ -62,6 +62,7 @@ async function updateReview (req, res) {
 async function deleteReview (req, res) {
   try {
     const recipe = await Recipe.findById(req.params.recipeId)
+    console.log(recipe)
     recipe.reviews.remove({_id: req.params.reviewId})
     await recipe.save()
     res.status(200).json(recipe)  
