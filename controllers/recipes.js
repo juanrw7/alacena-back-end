@@ -102,16 +102,16 @@ async function create (req, res) {
 }
 
 async function showRecipe (req, res){
-  console.log(req.body.recipeData)
+  console.log(req.body.label + "<- this is req body")
   const recipe = await Recipe.findOne({uri:req.body.uri})
     .populate("reviews.author")
-  console.log(recipe)
+  console.log(recipe + "<- this is recipe")
   try {
     if (recipe) {
       console.log(req.body.uri)
       res.status(201).json(recipe)
     } else {
-      res.status(201).json(req.body.recipeData)
+      res.status(201).json(req.body)
     }
   } catch (error) {
     console.log(error)
