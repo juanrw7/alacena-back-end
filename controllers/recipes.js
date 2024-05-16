@@ -119,6 +119,23 @@ async function showRecipe (req, res){
   }
 }
 
+async function searchIngredient(req, res) {
+
+  console.log(req.body)
+  console.log(req.body.ingredient10)
+  try {
+  
+    axios.get(`https://api.edamam.com/api/recipes/v2?type=public&q=${req.body.ingredient1}%2C%20${req.body.ingredient2}%2C%20${req.body.ingredient3}%2C%20${req.body.ingredient4}&app_id=${process.env.EDAMAM_APP_ID}&app_key=${process.env.EDAMAM_APP_KEY}`)
+    .then(response => {
+    console.log(req.body.ingredient1)
+      res.json(response.data.hits)
+    })
+  } catch (error) {
+    console.log(error)
+      res.status(500).json(error)
+}
+}
+
 export{
   index,
   show,
@@ -127,4 +144,5 @@ export{
   deleteReview,
   create,
   showRecipe,
+  searchIngredient
 }
