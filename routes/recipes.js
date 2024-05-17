@@ -9,7 +9,6 @@ const router = Router()
 
 /*---------- Protected Routes ----------*/
 router.use(decodeUserFromToken)
-router.get('/:recipeId', checkAuth, recipesCtrl.show)
 router.put('/:recipeId/reviews', checkAuth, recipesCtrl.updateReview)
 router.post('/', checkAuth, recipesCtrl.index)
 router.post('/new', checkAuth, recipesCtrl.create)
