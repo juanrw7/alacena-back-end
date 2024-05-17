@@ -6,10 +6,7 @@ async function index (req, res) {
   console.log(req.body.mealType)
   try {
     axios.get(`https://api.edamam.com/api/recipes/v2?type=public&app_id=${process.env.EDAMAM_APP_ID}&app_key=${process.env.EDAMAM_APP_KEY}&mealType=${req.body.mealType}&random=true`)
-    .then(response => {
-      console.log(response.data.hits)
-      res.json(response.data.hits)
-    })
+     await res.json(response.data.hits)
   } catch (error) {
     console.log(error)
       res.status(500).json(error)
@@ -121,15 +118,13 @@ async function showRecipe (req, res){
 
 async function searchIngredient(req, res) {
 
-  console.log(req.body)
-  console.log(req.body.ingredient10)
   try {
   
-    axios.get(`https://api.edamam.com/api/recipes/v2?type=public&q=${req.body.ingredient1}%2C%20${req.body.ingredient2}%2C%20${req.body.ingredient3}%2C%20${req.body.ingredient4}&app_id=${process.env.EDAMAM_APP_ID}&app_key=${process.env.EDAMAM_APP_KEY}`)
-    .then(response => {
-    console.log(req.body.ingredient1)
-      res.json(response.data.hits)
-    })
+    const result = await axios.get(`https://api.edamam.com/api/recipes/v2?type=public&q=${req.body.ingredient1}%2C%20${req.body.ingredient2}%2C%20${req.body.ingredient3}%2C%20${req.body.ingredient4}%2C%20${req.body.ingredient5}%2C%20${req.body.ingredient6}%2C%20${req.body.ingredient7}%2C%20${req.body.ingredient8}%2C%20${req.body.ingredient9}%2C%20${req.body.ingredient10}:&app_id=${process.env.EDAMAM_APP_ID}&app_key=${process.env.EDAMAM_APP_KEY}`)
+    
+    res.json(result.data.hits)
+    console.log(result.data)
+    console.log(result.data.hits)
   } catch (error) {
     console.log(error)
       res.status(500).json(error)
