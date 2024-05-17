@@ -3,21 +3,10 @@ import { Recipe } from "../models/recipe.js"
 import axios from "axios"
 
 async function index (req, res) {
-  console.log(req.body.mealType)
   try {
-    axios.get(`https://api.edamam.com/api/recipes/v2?type=public&app_id=${process.env.EDAMAM_APP_ID}&app_key=${process.env.EDAMAM_APP_KEY}&mealType=${req.body.mealType}&random=true`)
-     await res.json(response.data.hits)
-  } catch (error) {
-    console.log(error)
-      res.status(500).json(error)
-  }
-}
+    const result = await axios.get(`https://api.edamam.com/api/recipes/v2?type=public&app_id=${process.env.EDAMAM_APP_ID}&app_key=${process.env.EDAMAM_APP_KEY}&mealType=${req.body.mealType}&random=true`)
 
-async function show (req, res){
-  try {
-    const recipe = await Recipe.findById(req.params.recipeId)
-    .populate()
-    res.status(200).json(recipe)
+    res.json(result.data.hits)
   } catch (error) {
     console.log(error)
       res.status(500).json(error)
@@ -41,14 +30,12 @@ async function createReview (req, res) {
 }
 
 async function updateReview (req, res) {
-  console.log(req.body._id)
   try {
     const recipe = await Recipe.findById(req.params.recipeId)
     const review = recipe.reviews.id(req.body._id)
     review.comment = req.body.comment
     review.rating = req.body.rating
     await recipe.save()
-    console.log(recipe)
     res.status(200).json(recipe)
   } catch (error) {
     console.log(error)
@@ -59,7 +46,6 @@ async function updateReview (req, res) {
 async function deleteReview (req, res) {
   try {
     const recipe = await Recipe.findById(req.params.recipeId)
-    console.log(recipe)
     recipe.reviews.remove({_id: req.params.reviewId})
     await recipe.save()
     res.status(200).json(recipe)  
@@ -70,7 +56,6 @@ async function deleteReview (req, res) {
   }
   
 async function create (req, res) {
-  console.log(req.body.reviewData.author)
   req.body.reviewData.author = req.user.profile
   const recipe = await Recipe.findOne({uri:req.body.recipeData.uri})
     .populate("reviews.author")
@@ -81,7 +66,6 @@ async function create (req, res) {
       const newReview = recipe.reviews.at(-1)
       const profile = await Profile.findById(req.user.profile)
       newReview.author = profile
-      console.log(profile)
       res.status(201).json(recipe)
     } else {
       const newRecipe = await Recipe.create(req.body.recipeData)
@@ -99,13 +83,10 @@ async function create (req, res) {
 }
 
 async function showRecipe (req, res){
-  console.log(req.body.label + "<- this is req body")
   const recipe = await Recipe.findOne({uri:req.body.uri})
     .populate("reviews.author")
-  console.log(recipe + "<- this is recipe")
   try {
     if (recipe) {
-      console.log(req.body.uri)
       res.status(201).json(recipe)
     } else {
       res.status(201).json(req.body)
@@ -117,14 +98,10 @@ async function showRecipe (req, res){
 }
 
 async function searchIngredient(req, res) {
-
   try {
-  
     const result = await axios.get(`https://api.edamam.com/api/recipes/v2?type=public&q=${req.body.ingredient1}%2C%20${req.body.ingredient2}%2C%20${req.body.ingredient3}%2C%20${req.body.ingredient4}%2C%20${req.body.ingredient5}%2C%20${req.body.ingredient6}%2C%20${req.body.ingredient7}%2C%20${req.body.ingredient8}%2C%20${req.body.ingredient9}%2C%20${req.body.ingredient10}:&app_id=${process.env.EDAMAM_APP_ID}&app_key=${process.env.EDAMAM_APP_KEY}`)
     
     res.json(result.data.hits)
-    console.log(result.data)
-    console.log(result.data.hits)
   } catch (error) {
     console.log(error)
       res.status(500).json(error)
@@ -133,7 +110,6 @@ async function searchIngredient(req, res) {
 
 export{
   index,
-  show,
   createReview,
   updateReview,
   deleteReview,
