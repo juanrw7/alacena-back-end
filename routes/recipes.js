@@ -16,5 +16,6 @@ router.post('/new', checkAuth, recipesCtrl.create)
 router.post('/:recipeId/reviews', checkAuth, recipesCtrl.createReview)
 router.post('/recipedetails', checkAuth, recipesCtrl.showRecipe)
 router.delete('/:recipeId/reviews/:reviewId', checkAuth, recipesCtrl.deleteReview)
+router.post('/search', checkAuth, recipesCtrl.searchIngredient)
 
 export { router }
